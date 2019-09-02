@@ -18,6 +18,7 @@ var Engine = (function (global) {
      * create the canvas element, grab the 2D context for that canvas
      * set the canvas element's height/width and add it to the DOM.
      */
+    //they define a canva here
     var doc = global.document,
         win = global.window,
         canvas = doc.createElement('canvas'),
@@ -77,10 +78,10 @@ var Engine = (function (global) {
      * functionality this way (you could just implement collision detection
      * on the entities themselves within your app.js file).
      */
-    // function update(dt) {
-    //     updateEntities(dt);
-    //     // checkCollisions();
-    // }
+    function update(dt) {
+        updateEntities(dt);
+        // checkCollisions();
+    }
 
     /* This is called by the update function and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -89,12 +90,12 @@ var Engine = (function (global) {
      * the data/properties related to the object. Do your drawing in your
      * render methods.
      */
-    // function updateEntities(dt) {
-    //     allEnemies.forEach(function(enemy) {
-    //         enemy.update(dt);
-    //     });
-    //     player.update();
-    // }
+    function updateEntities(dt) {
+        allEnemies.forEach(function (enemy) {
+            enemy.update(dt);
+        });
+        player.update();
+    }
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
