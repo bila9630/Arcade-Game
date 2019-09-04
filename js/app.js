@@ -1,98 +1,99 @@
 // Enemies our player must avoid
-var Enemy = function (startX, startY, enemySpeed) {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-    this.x = startX;
-    this.y = startY;
-    this.speed = enemySpeed;
+var Enemy = function(startX, startY, enemySpeed) {
+  // Variables applied to each of our instances go here,
+  // we've provided one for you to get started
+  this.x = startX;
+  this.y = startY;
+  this.speed = enemySpeed;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = "images/enemy-bug.png";
+  // The image/sprite for our enemies, this uses
+  // a helper we've provided to easily load images
+  this.sprite = "images/enemy-bug.png";
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function (dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x += this.speed * dt;
+Enemy.prototype.update = function(dt) {
+  // You should multiply any movement by the dt parameter
+  // which will ensure the game runs at the same speed for
+  // all computers.
+  this.x += this.speed * dt;
 
-    // if enemy go out the map, return back to its original position and have an another speed
-    if (this.x > 430) {
-        this.x = -150;
-        this.speed = Math.round(Math.random() * 100) + 100;
-    }
+  // if enemy go out the map, return back to its original position and have an another speed
+  if (this.x > 430) {
+    this.x = -150;
+    this.speed = Math.round(Math.random() * 100) + 100;
+  }
 
-    // when enemy collion with enemy ( another way to achieve the same thing)
-    // if (this.x + 30 >= player.x && this.x - 30 <= player.x && this.y == player.y) {
-    //     player.OriginalPosition();
-    // }
-
+  // when enemy collion with enemy ( another way to achieve the same thing)
+  // if (this.x + 30 >= player.x && this.x - 30 <= player.x && this.y == player.y) {
+  //     player.OriginalPosition();
+  // }
 };
 
 // Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function () {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+Enemy.prototype.render = function() {
+  ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-var Player = function () {
-    this.sprite = "images/char-boy.png";
+var Player = function() {
+  this.sprite = "images/char-boy.png";
+  this.x = 200;
+  this.y = 380;
+
+  //return back to the original position
+  this.OriginalPosition = () => {
     this.x = 200;
     this.y = 380;
+  };
 
-    //return back to the original position
-    this.OriginalPosition = () => {
-        this.x = 200;
-        this.y = 380;
-    };
+  this.update = function() {
+    //when player gets to the river
+    if (this.y == -20) {
+      alert("You win");
+      this.OriginalPosition();
+    }
 
+    //when player collision with enemy
+    for (let enemy of allEnemies) {
+      if (
+        enemy.x + 45 >= this.x &&
+        enemy.x - 45 <= this.x &&
+        this.y === enemy.y
+      ) {
+        //return to their original position
+        player.OriginalPosition();
+      }
+    }
+  };
+  //the player will be draw here
+  this.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  };
 
-    this.update = function () {
-        //when player gets to the river
-        if (this.y == -20) {
-            alert("You win");
-            this.OriginalPosition();
-        }
+  this.handleInput = function(keyPressed) {
+    // all of "this.y > number" prevent player to go outside the field
+    if (keyPressed == "up" && this.y > 0) {
+      this.y -= 80;
+      console.log(this.y);
+    }
 
-        //when player collision with enemy 
-        for (let enemy of allEnemies) {
-            if (enemy.x + 45 >= this.x && enemy.x - 45 <= this.x && this.y === enemy.y) {
-                //return to their original position
-                player.OriginalPosition();
-            }
-        }
+    if (keyPressed == "left" && this.x > 0) {
+      this.x -= 101;
+    }
 
-    };
-    //the player will be draw here
-    this.render = function () {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    };
+    if (keyPressed == "down" && this.y < 370) {
+      this.y += 80;
+      console.log(this.y);
+    }
 
-    this.handleInput = function (keyPressed) {
-        // all of "this.y > number" prevent player to go outside the field 
-        if (keyPressed == "up" && this.y > 0) {
-            this.y -= 80;
-            console.log(this.y);
-        }
-
-        if (keyPressed == "left" && this.x > 0) {
-            this.x -= 101;
-        }
-
-        if (keyPressed == "down" && this.y < 370) {
-            this.y += 80;
-            console.log(this.y);
-        }
-
-        if (keyPressed == "right" && this.x < 400) {
-            this.x += 101;
-        }
-    };
+    if (keyPressed == "right" && this.x < 400) {
+      this.x += 101;
+    }
+  };
 };
 
 // Now instantiate your objects.
@@ -102,20 +103,26 @@ var Player = function () {
 var player = new Player();
 
 var allEnemies = [
-    new Enemy(-150, 60, Math.round(Math.random() * 100) + 100),
-    new Enemy(-150, 140, Math.round(Math.random() * 100) + 100),
-    new Enemy(-150, 220, Math.round(Math.random() * 100) + 100)
+  new Enemy(-150, 60, Math.round(Math.random() * 100) + 100),
+  new Enemy(-150, 140, Math.round(Math.random() * 100) + 100),
+  new Enemy(-150, 220, Math.round(Math.random() * 100) + 100)
 ];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener("keyup", function (e) {
-    var allowedKeys = {
-        37: "left",
-        38: "up",
-        39: "right",
-        40: "down"
-    };
+document.addEventListener("keyup", function(e) {
+  var allowedKeys = {
+    37: "left",
+    38: "up",
+    39: "right",
+    40: "down"
+  };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+  player.handleInput(allowedKeys[e.keyCode]);
 });
+
+/*
+Some sources: 
+Collision: https://knowledge.udacity.com/questions/50370
+Concept based on another game: https://www.youtube.com/watch?v=z3HdLYku-jY&list=PLdN82lhRV2eJafI7uSIqzMO2ofaqXQiCS
+*/
