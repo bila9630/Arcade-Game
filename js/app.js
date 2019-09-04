@@ -17,10 +17,11 @@ Enemy.prototype.update = function (dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    this.speed = this.speed * dt;
+    this.x += this.speed * dt;
 
     if (this.x > 430) {
-        this.x = 1;
+        this.x = -150;
+        this.speed = Math.round(Math.random() * 100) + 100;
     }
 };
 
@@ -38,16 +39,20 @@ var Player = function () {
     this.y = 375;
 
     //return back to the original position
-    this.PlayerDie = () => {
+    this.OriginalPosition = () => {
         this.x = 200;
         this.y = 375;
     };
 
     this.update = function () {
         //return back to its position
-        if (this.x < -2) {
-            this.PlayerDie();
-            alert("oh no");
+
+        if (this.y == -25) {
+            window.setTimeout(() => {
+                alert("You win");
+            }, 1000);
+            this.OriginalPosition();
+
         }
     };
     //the player will be draw here
@@ -61,22 +66,19 @@ var Player = function () {
             console.log(this.x, this.y);
         }
 
-        if (keyPressed == "left") {
+        if (keyPressed == "left" && this.x > 0) {
             this.x -= 101;
             console.log(this.x, this.y);
-
         }
 
-        if (keyPressed == "down") {
+        if (keyPressed == "down" && this.y < 300) {
             this.y += 80;
             console.log(this.x, this.y);
-
         }
 
-        if (keyPressed == "right") {
+        if (keyPressed == "right" && this.x < 400) {
             this.x += 101;
             console.log(this.x, this.y);
-
         }
     };
 };
@@ -88,9 +90,9 @@ var Player = function () {
 var player = new Player();
 
 var allEnemies = [
-    new Enemy(1, 60, Math.round(Math.random() * 10)),
-    new Enemy(1, 140, Math.round(Math.random() * 10)),
-    new Enemy(1, 225, Math.round(Math.random() * 10))
+    new Enemy(-150, 60, Math.round(Math.random() * 100) + 100),
+    new Enemy(-150, 140, Math.round(Math.random() * 100) + 100),
+    new Enemy(-150, 225, Math.round(Math.random() * 100) + 100)
 ];
 
 // This listens for key presses and sends the keys to your
