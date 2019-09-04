@@ -18,6 +18,10 @@ Enemy.prototype.update = function (dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.speed = this.speed * dt;
+
+    if (this.x > 430) {
+        this.x = 1;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -33,27 +37,46 @@ var Player = function () {
     this.x = 200;
     this.y = 375;
 
-    this.update = function () {};
+    //return back to the original position
+    this.PlayerDie = () => {
+        this.x = 200;
+        this.y = 375;
+    };
+
+    this.update = function () {
+        //return back to its position
+        if (this.x < -2) {
+            this.PlayerDie();
+            alert("oh no");
+        }
+    };
     //the player will be draw here
     this.render = function () {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
 
     this.handleInput = function (keyPressed) {
-        if (keyPressed == "up") {
+        if (keyPressed == "up" && this.y > 0) {
             this.y -= 80;
+            console.log(this.x, this.y);
         }
 
         if (keyPressed == "left") {
             this.x -= 101;
+            console.log(this.x, this.y);
+
         }
 
         if (keyPressed == "down") {
             this.y += 80;
+            console.log(this.x, this.y);
+
         }
 
         if (keyPressed == "right") {
             this.x += 101;
+            console.log(this.x, this.y);
+
         }
     };
 };
@@ -68,7 +91,7 @@ var allEnemies = [
     new Enemy(1, 60, Math.round(Math.random() * 10)),
     new Enemy(1, 140, Math.round(Math.random() * 10)),
     new Enemy(1, 225, Math.round(Math.random() * 10))
-]
+];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
