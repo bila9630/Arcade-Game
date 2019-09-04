@@ -74,16 +74,19 @@ var Player = function () {
     };
 
     this.handleInput = function (keyPressed) {
+        // all of "this.y > number" prevent player to go outside the field 
         if (keyPressed == "up" && this.y > 0) {
             this.y -= 80;
+            console.log(this.y);
         }
 
         if (keyPressed == "left" && this.x > 0) {
             this.x -= 101;
         }
 
-        if (keyPressed == "down" && this.y < 300) {
+        if (keyPressed == "down" && this.y < 370) {
             this.y += 80;
+            console.log(this.y);
         }
 
         if (keyPressed == "right" && this.x < 400) {
