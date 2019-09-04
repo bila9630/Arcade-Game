@@ -8,7 +8,7 @@ var Enemy = function (startX, startY, enemySpeed) {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    this.sprite = "images/enemy-bug.png";
 };
 
 // Update the enemy's position, required method for game
@@ -18,10 +18,6 @@ Enemy.prototype.update = function (dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
     this.speed = this.speed * dt;
-
-
-
-
 };
 
 // Draw the enemy on the screen, required method for game
@@ -33,53 +29,55 @@ Enemy.prototype.render = function () {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function () {
-    this.sprite = 'images/char-boy.png';
-    this.x = 150;
-    this.y = 150;
+    this.sprite = "images/char-boy.png";
+    this.x = 200;
+    this.y = 375;
 
-    this.update = function () {
-
-    };
+    this.update = function () {};
     //the player will be draw here
     this.render = function () {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
 
     this.handleInput = function (keyPressed) {
-
-        if (keyPressed == 'up') {
-            alert("The up has been pressed!");
+        if (keyPressed == "up") {
+            this.y -= 80;
         }
 
-        if (keyPressed == 'left') {
-            alert("The left has been pressed!");
+        if (keyPressed == "left") {
+            this.x -= 101;
         }
 
-        if (keyPressed == 'down') {
-            alert("The down has been pressed!");
+        if (keyPressed == "down") {
+            this.y += 80;
         }
 
-        if (keyPressed == 'right') {
-            alert("The right has been pressed!");
+        if (keyPressed == "right") {
+            this.x += 101;
         }
-
-
     };
 };
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
+//map width: 505; height: 606
 var player = new Player();
+
+var allEnemies = [
+    new Enemy(1, 60, Math.round(Math.random() * 10)),
+    new Enemy(1, 140, Math.round(Math.random() * 10)),
+    new Enemy(1, 225, Math.round(Math.random() * 10))
+]
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function (e) {
+document.addEventListener("keyup", function (e) {
     var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
+        37: "left",
+        38: "up",
+        39: "right",
+        40: "down"
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
